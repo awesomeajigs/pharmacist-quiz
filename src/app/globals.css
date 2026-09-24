@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Short phones (iPhone SE, small Androids, landscape): tighten vertical rhythm. */
+@custom-variant short (@media (max-height: 700px));
+
 :root {
   --bg: #ffffff;
   --ink: #111111;
@@ -108,4 +111,40 @@ body {
   ::view-transition-new(*) {
     animation: none !important;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive sizing. The Figma frames are 375x812; at that size and above
+   these resolve to the exact design values, and they scale down on narrower
+   or shorter screens. Each rule repeats a vh/vw-only fallback first for
+   browsers without dvh support.
+   ------------------------------------------------------------------------- */
+
+/* Home sticker cluster: 343x302 in the design. Fit the width, and leave
+   room for the headline and Start button on short screens. */
+.home-cluster {
+  width: min(343px, calc(100vw - 32px));
+  width: max(180px, min(343px, calc(100vw - 32px), calc((100dvh - 380px) * 1.136)));
+  aspect-ratio: 343 / 302;
+}
+
+/* Result mascot: 256px in the design. */
+.result-mascot {
+  width: clamp(120px, 31.6vh, 256px);
+  width: clamp(120px, 31.6dvh, 256px);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+/* Story-card preview in the share sheet: 210x373 in the design (9:16).
+   Shrinks so the whole sheet fits on short screens. */
+.share-preview {
+  width: clamp(110px, calc((100vh - 300px) * 0.5625), 210px);
+  width: clamp(110px, calc((100dvh - 300px) * 0.5625), 210px);
+  aspect-ratio: 1080 / 1920;
+}
+
+.sheet-max-h {
+  max-height: 100vh;
+  max-height: 100dvh;
 }

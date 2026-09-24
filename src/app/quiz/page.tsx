@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, ViewTransition } from "react";
+import { useCallback, useEffect, useRef, useState, ViewTransition } from "react";
 import { useRouter } from "next/navigation";
 import AnswerOption from "@/components/AnswerOption";
 import BackButton from "@/components/BackButton";
@@ -21,6 +21,11 @@ export default function QuizPage() {
   const question = QUESTIONS[index];
   const isLast = index === TOTAL_QUESTIONS - 1;
   const selectedAnswerId = answers[index];
+
+  // On short screens the answers can scroll; start each question at the top.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [index]);
 
   const goBack = useCallback(() => {
     if (advanceTimer.current) clearTimeout(advanceTimer.current);
@@ -62,7 +67,7 @@ export default function QuizPage() {
 
   return (
     <ViewTransition exit={{ "quiz-submit": "page-fade", default: "none" }} default="none">
-      <main className="flex flex-1 flex-col gap-7 bg-white px-6 pb-8 pt-12">
+      <main className="flex flex-1 flex-col gap-7 bg-white px-6 pb-8 pt-12 short:gap-5 short:pt-6">
         <BackButton onClick={goBack} />
         <ProgressBar current={index + 1} total={TOTAL_QUESTIONS} />
 
@@ -82,7 +87,8 @@ export default function QuizPage() {
         </div>
 
         {isLast && (
-          <div className="mb-16 mt-auto">
+          // Pinned to the bottom edge when the answers scroll on short screens.
+          <div className="sticky bottom-0 -mx-6 mt-auto bg-white px-6 pb-16 pt-3 short:pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:-top-6 before:h-6 before:bg-linear-to-t before:from-white before:to-transparent">
             <PrimaryButton onClick={submit} disabled={!selectedAnswerId}>
               Submit
             </PrimaryButton>

@@ -38,6 +38,15 @@ export default function ShareSheet({ archetype, shareUrl, onClose }: ShareSheetP
     };
   }, [archetype, shareUrl]);
 
+  // Keep the page behind the sheet from scrolling while it is open.
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -85,17 +94,17 @@ export default function ShareSheet({ archetype, shareUrl, onClose }: ShareSheetP
         role="dialog"
         aria-modal="true"
         aria-label="Share your result"
-        className="animate-fade-up flex w-full max-w-[480px] flex-col items-center gap-5 rounded-t-[24px] bg-white px-6 pb-9 pt-3 shadow-[0_-4px_24px_0_rgba(0,0,0,0.12)]"
+        className="animate-fade-up sheet-max-h flex w-full max-w-[480px] flex-col items-center gap-5 overflow-y-auto overscroll-contain rounded-t-[24px] bg-white px-6 pb-9 pt-3 shadow-[0_-4px_24px_0_rgba(0,0,0,0.12)] short:gap-3 short:pb-5"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-1 w-9 rounded-[2px] bg-line" />
+        <div className="h-1 w-9 shrink-0 rounded-[2px] bg-line" />
 
         <div className="flex flex-col items-center gap-[2px]">
           <h3 className="text-[17px] font-semibold text-ink">Share Your Result</h3>
           <p className="text-[13px] text-ink-soft">{archetype.name}</p>
         </div>
 
-        <div className="h-[373px] w-[210px] overflow-hidden rounded-[16px] border border-line bg-white shadow-[0_8px_20px_0_rgba(0,0,0,0.14)]">
+        <div className="share-preview shrink-0 overflow-hidden rounded-[16px] border border-line bg-white shadow-[0_8px_20px_0_rgba(0,0,0,0.14)]">
           {card ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
