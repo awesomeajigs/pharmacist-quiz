@@ -8,9 +8,17 @@ import ShareSheet from "@/components/ShareSheet";
 import type { Archetype } from "@/lib/quiz-data";
 import type { StatsResponse } from "@/app/api/stats/route";
 
-// Below this many total results the live percentage is too noisy to show,
-// so the designed "1 in N" copy is used instead.
-const MIN_RESULTS_FOR_LIVE_STAT = 20;
+// How often an open result page re-checks the live counts.
+const STATS_POLL_MS = 8000;
+
+type Counts = { count: number; total: number };
+
+/** Live stat in the design's "1 in 6 pharmacists test as ..." phrasing. */
+function formatStat({ count, total }: Counts, name: string) {
+  if (total === 0) return `No pharmacists have tested as ${name} yet`;
+  if (total === 1) return `${count} in 1 pharmacist tests as ${name}`;
+  return `${count} in ${total} pharmacists test as ${name}`;
+}
 
 interface ResultViewProps {
   archetype: Archetype;
@@ -19,24 +27,35 @@ interface ResultViewProps {
 export default function ResultView({ archetype }: ResultViewProps) {
   const router = useRouter();
   const [shareOpen, setShareOpen] = useState(false);
-  const [liveStat, setLiveStat] = useState<string | null>(null);
+  const [counts, setCounts] = useState<Counts | null>(null);
 
+  // Live stat chip: load now, then keep polling while the page is visible so
+  // it ticks up as other people finish the quiz.
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/stats")
-      .then((res) => (res.ok ? (res.json() as Promise<StatsResponse>) : null))
-      .then((stats) => {
-        if (cancelled || !stats || stats.total < MIN_RESULTS_FOR_LIVE_STAT) return;
-        const { pct } = stats.byArchetype[archetype.id];
-        setLiveStat(`${pct}% of pharmacists so far got ${archetype.name}`);
-      })
-      .catch(() => {
-        // keep the static stat
-      });
+    const load = () => {
+      if (document.visibilityState !== "visible") return;
+      fetch("/api/stats", { cache: "no-store" })
+        .then((res) => (res.ok ? (res.json() as Promise<StatsResponse>) : null))
+        .then((stats) => {
+          if (cancelled || !stats) return;
+          setCounts({ count: stats.byArchetype[archetype.id].count, total: stats.total });
+        })
+        .catch(() => {
+          // keep the last counts; the next poll retries
+        });
+    };
+    load();
+    const timer = setInterval(load, STATS_POLL_MS);
+    document.addEventListener("visibilitychange", load);
     return () => {
       cancelled = true;
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", load);
     };
-  }, [archetype.id, archetype.name]);
+  }, [archetype.id]);
+
+  const statText = counts ? formatStat(counts, archetype.name) : null;
 
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL ??
@@ -76,8 +95,18 @@ export default function ResultView({ archetype }: ResultViewProps) {
         </p>
 
         <div className="h-[6px] short:h-0" aria-hidden />
-        <span className="inline-flex items-center rounded-full bg-surface px-4 py-2 text-[13px] font-medium text-ink">
-          {liveStat ?? archetype.stat}
+        <span
+          aria-live="polite"
+          className="inline-flex items-center rounded-full bg-surface px-4 py-2 text-[13px] font-medium text-ink"
+        >
+          {statText ? (
+            // Re-keyed on change so each update fades in.
+            <span key={statText} className="animate-fade-up">
+              {statText}
+            </span>
+          ) : (
+            <span className="text-ink-soft">Counting pharmacists…</span>
+          )}
         </span>
       </div>
 

@@ -25,6 +25,7 @@ export async function GET() {
   ) as StatsResponse["byArchetype"];
 
   return Response.json({ total, byArchetype } satisfies StatsResponse, {
-    headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+    // Never cached: result pages poll this so new completions show up live.
+    headers: { "Cache-Control": "no-store" },
   });
 }
