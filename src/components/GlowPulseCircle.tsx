@@ -1,11 +1,12 @@
 "use client";
 
 interface GlowPulseCircleProps {
-  pressed: boolean;
-  onTap: () => void;
+  /** Hides the tap target once the reveal overlay has taken its place. */
+  hidden: boolean;
+  onTap: (target: HTMLButtonElement) => void;
 }
 
-export default function GlowPulseCircle({ pressed, onTap }: GlowPulseCircleProps) {
+export default function GlowPulseCircle({ hidden, onTap }: GlowPulseCircleProps) {
   return (
     <div className="relative flex size-[220px] items-center justify-center">
       {/* soft blurred glow */}
@@ -28,11 +29,11 @@ export default function GlowPulseCircle({ pressed, onTap }: GlowPulseCircleProps
       {/* tap target */}
       <button
         type="button"
-        onClick={onTap}
+        onClick={(e) => onTap(e.currentTarget)}
         aria-label="Tap to reveal your pharmacist type"
         className={[
-          "relative z-10 size-[140px] rounded-full bg-accent shadow-[0_0_30px_0_rgba(14,140,127,0.45)]",
-          pressed ? "animate-circle-pop" : "animate-breathe",
+          "animate-breathe relative z-10 size-[140px] rounded-full bg-accent shadow-[0_0_30px_0_rgba(14,140,127,0.45)]",
+          hidden ? "invisible" : "",
         ].join(" ")}
       />
     </div>

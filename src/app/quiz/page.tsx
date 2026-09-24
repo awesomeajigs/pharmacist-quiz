@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, ViewTransition } from "react";
 import { useRouter } from "next/navigation";
 import AnswerOption from "@/components/AnswerOption";
 import BackButton from "@/components/BackButton";
@@ -56,37 +56,39 @@ export default function QuizPage() {
     } catch {
       // sessionStorage unavailable — reveal page will fall back gracefully
     }
-    router.push("/reveal");
+    // Figma prototype: Submit -> Tap to Reveal is a 400ms linear crossfade.
+    router.push("/reveal", { transitionTypes: ["quiz-submit"] });
   }, [answers, router]);
 
   return (
+    <ViewTransition exit={{ "quiz-submit": "page-fade", default: "none" }} default="none">
+      <main className="flex flex-1 flex-col gap-7 bg-white px-6 pb-8 pt-12">
+        <BackButton onClick={goBack} />
+        <ProgressBar current={index + 1} total={TOTAL_QUESTIONS} />
 
-    <main className="flex flex-1 flex-col gap-7 bg-white px-6 pb-8 pt-12">
-      <BackButton onClick={goBack} />
-      <ProgressBar current={index + 1} total={TOTAL_QUESTIONS} />
+        <h2 className="text-[22px] font-semibold leading-[1.28] tracking-[-0.01em] text-ink">
+          {question.prompt}
+        </h2>
 
-      <h2 className="text-[22px] font-semibold leading-[1.28] tracking-[-0.01em] text-ink">
-        {question.prompt}
-      </h2>
-
-      <div className="flex flex-col gap-3">
-        {question.answers.map((answer) => (
-          <AnswerOption
-            key={answer.id}
-            text={answer.text}
-            selected={selectedAnswerId === answer.id}
-            onSelect={() => selectAnswer(answer.id)}
-          />
-        ))}
-      </div>
-
-      {isLast && (
-        <div className="mb-16 mt-auto">
-          <PrimaryButton onClick={submit} disabled={!selectedAnswerId}>
-            Submit
-          </PrimaryButton>
+        <div className="flex flex-col gap-3">
+          {question.answers.map((answer) => (
+            <AnswerOption
+              key={answer.id}
+              text={answer.text}
+              selected={selectedAnswerId === answer.id}
+              onSelect={() => selectAnswer(answer.id)}
+            />
+          ))}
         </div>
-      )}
-    </main>
+
+        {isLast && (
+          <div className="mb-16 mt-auto">
+            <PrimaryButton onClick={submit} disabled={!selectedAnswerId}>
+              Submit
+            </PrimaryButton>
+          </div>
+        )}
+      </main>
+    </ViewTransition>
   );
 }

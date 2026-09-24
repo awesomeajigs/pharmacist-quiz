@@ -85,14 +85,6 @@ body {
   animation: glow-breathe 2.4s ease-in-out infinite;
 }
 
-@keyframes circle-pop {
-  0% { transform: scale(0.94); }
-  40% { transform: scale(1.12); }
-  100% { transform: scale(1); }
-}
-.animate-circle-pop {
-  animation: circle-pop 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
 
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(8px); }
@@ -100,4 +92,20 @@ body {
 }
 .animate-fade-up {
   animation: fade-up 400ms ease-out forwards;
+}
+
+/* Figma prototype: Question 10 Submit -> Tap to Reveal crossfade (400ms, linear).
+   Applied via <ViewTransition> class "page-fade" on the quiz-submit navigation. */
+::view-transition-old(.page-fade),
+::view-transition-new(.page-fade) {
+  animation-duration: 400ms;
+  animation-timing-function: linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
