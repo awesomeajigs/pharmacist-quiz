@@ -33,7 +33,7 @@ export default function AnswerOption({
       </span>
       <span
         className={[
-          "size-[18px] shrink-0 rounded-full border-2",
+          "size-[18px] shrink-0 rounded-full border-[1.5px]",
           selected ? "border-accent bg-accent" : "border-line bg-white",
         ].join(" ")}
       />

@@ -81,9 +81,11 @@ export default function QuizPage() {
       </div>
 
       {isLast && (
-        <PrimaryButton onClick={submit} disabled={!selectedAnswerId}>
-          Submit
-        </PrimaryButton>
+        <div className="mb-16 mt-auto">
+          <PrimaryButton onClick={submit} disabled={!selectedAnswerId}>
+            Submit
+          </PrimaryButton>
+        </div>
       )}
     </main>
   );

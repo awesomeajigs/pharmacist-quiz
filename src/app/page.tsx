@@ -1,12 +1,9 @@
 import PrimaryButton from "@/components/PrimaryButton";
 import MascotCluster from "@/components/MascotCluster";
-import ConfettiAccents from "@/components/ConfettiAccents";
 
 export default function HomePage() {
   return (
     <main className="relative flex flex-1 flex-col overflow-hidden bg-white px-6 pb-8 pt-12">
-      <ConfettiAccents />
-
       <div className="relative z-10 flex flex-col gap-4">
         <p className="text-[11px] font-medium tracking-[0.08em] text-accent">
           WORLD PHARMACIST DAY · SEPT 25

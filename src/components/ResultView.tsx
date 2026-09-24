@@ -44,33 +44,41 @@ export default function ResultView({ archetype }: ResultViewProps) {
   const shareUrl = `${siteUrl}/result/${archetype.id}`;
 
   return (
-    <main className="flex flex-1 flex-col justify-between bg-white px-6 pb-8 pt-12">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <Mascot archetypeId={archetype.id} color={archetype.color} size={220} />
+    <main className="relative flex flex-1 flex-col justify-between bg-white px-6 pb-8 pt-6">
+      {/* Celebration confetti overlay (animated GIF from the Figma result frames) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/confetti.gif"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute left-0 top-0 z-10 h-[365px] w-full object-cover"
+      />
 
-        <p className="mt-2 text-[11px] font-medium tracking-[0.08em] text-ink-soft">
+      <div className="flex flex-col items-center gap-[14px] pb-6 text-center">
+        <Mascot archetypeId={archetype.id} size={256} priority />
+
+        <p className="text-[11px] font-medium leading-[1.2] tracking-[0.08em] text-ink-soft">
           YOUR RESULT
         </p>
-        <h1 className="text-[40px] font-bold leading-[1.06] tracking-[-0.015em] text-ink">
+        <h1 className="text-[40px] font-bold leading-[1.06] tracking-[-0.6px] text-ink">
           {archetype.name}
         </h1>
-        <p
-          className="text-[16px] font-medium leading-normal"
-          style={{ color: archetype.color }}
-        >
+        <p className="text-[18px] font-medium leading-normal text-[#484e5b]">
           {archetype.tagline}
         </p>
 
-        <p className="mt-1 text-[16px] leading-[1.45] text-ink-soft">
+        <div className="h-[10px]" aria-hidden />
+        <p className="text-[16px] leading-[1.45] text-ink-soft">
           {archetype.description}
         </p>
 
-        <span className="mt-1 inline-flex items-center rounded-full bg-surface px-4 py-2 text-[13px] font-medium text-ink">
+        <div className="h-[6px]" aria-hidden />
+        <span className="inline-flex items-center rounded-full bg-surface px-4 py-2 text-[13px] font-medium text-ink">
           {liveStat ?? archetype.stat}
         </span>
       </div>
 
-      <div className="mt-8 flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-6">
         <PrimaryButton onClick={() => setShareOpen(true)}>
           Share Your Result
         </PrimaryButton>

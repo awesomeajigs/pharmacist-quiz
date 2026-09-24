@@ -27,7 +27,7 @@ const base =
 
 const enabled = "bg-accent text-on-accent shadow-edge-accent cursor-pointer";
 const disabledClasses =
-  "bg-surface text-ink-soft shadow-none cursor-not-allowed";
+  "bg-surface text-on-accent shadow-none cursor-not-allowed";
 
 export default function PrimaryButton(props: PrimaryButtonProps) {
   const classes = [base, props.disabled ? disabledClasses : enabled, props.className ?? ""].join(" ");
