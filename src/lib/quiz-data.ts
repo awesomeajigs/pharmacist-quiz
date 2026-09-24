@@ -1,11 +1,14 @@
 // ---------------------------------------------------------------------------
 // "What Kind of Pharmacist Are You?" — quiz content + scoring
 //
-// Result copy is ported verbatim from the approved Figma file. Questions and
-// answers are the client-supplied set: 10 questions x 5 options, where every
-// question offers exactly one answer per archetype (each archetype can score
-// once per question, 10 slots each across the quiz). The `archetype` tag on
-// each answer is as specified by the client.
+// Every question offers all 5 archetypes as options (5 answers per
+// question, one per archetype), so each pick is worth exactly 1 point to
+// that archetype. After 10 questions, whichever archetype has the most
+// points wins; ties are broken by TIE_BREAK_ORDER. Questions are written
+// as quick, playful "which one sounds like you" prompts (Nollywood
+// characters, Nigerian food, confessions) rather than literal workplace
+// scenarios, and answer wording avoids naming the archetype or trait
+// directly.
 // ---------------------------------------------------------------------------
 
 export type ArchetypeId =
@@ -79,12 +82,13 @@ export const ARCHETYPES: Record<ArchetypeId, Archetype> = {
 };
 
 // Tie-break order when two or more archetypes are level after all 10
-// questions (established during the design phase).
+// questions. Ordered by rarity (rarest archetype wins the tie first), so a
+// tied result leans toward the stat that feels more special.
 export const TIE_BREAK_ORDER: ArchetypeId[] = [
-  "counselor",
+  "mentor",
   "detective",
   "sprinter",
-  "mentor",
+  "counselor",
   "guardian",
 ];
 

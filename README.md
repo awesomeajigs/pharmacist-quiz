@@ -64,6 +64,6 @@ designed "1 in N" copy before that.
 
 Each of the 10 questions has 5 answers, one per archetype (Counselor,
 Detective, Sprinter, Mentor, Guardian). Points are tallied across all 10
-answers; ties are broken in this order: Counselor → Detective → Sprinter →
-Mentor → Guardian. Questions, answers and their archetype tags live in
+answers; ties are broken in this order: Mentor → Detective → Sprinter →
+Counselor → Guardian. Questions, answers and their archetype tags live in
 `src/lib/quiz-data.ts`.
