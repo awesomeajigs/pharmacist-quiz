@@ -20,7 +20,7 @@ export default function AnswerOption({
       disabled={disabled}
       aria-pressed={selected}
       className={[
-        "flex w-full items-center gap-3 rounded-[20px] border-2 p-4 text-left transition-transform",
+        "flex w-full items-center gap-3 rounded-[20px] border-2 p-4 text-left transition-transform short:py-3",
         "active:translate-y-[2px] active:shadow-none",
         selected
           ? "border-accent bg-[#ecf6f5] shadow-edge-accent"

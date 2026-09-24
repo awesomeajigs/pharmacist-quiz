@@ -1,15 +1,11 @@
 // ---------------------------------------------------------------------------
 // "What Kind of Pharmacist Are You?" — quiz content + scoring
 //
-// Content (questions, answer copy, result copy) is ported verbatim from the
-// approved Figma file. The archetype tag on each answer (which of the 5
-// archetypes it scores toward) was not stored anywhere retrievable from
-// Figma — it only ever existed as design intent — so it was reconstructed
-// here from each answer's tone/meaning, then balanced so every archetype
-// scores exactly 8 times across the 40 answer slots (10 questions x 4
-// options), and every question offers 4 different archetypes (one omitted
-// per question, each archetype omitted exactly twice across the quiz).
-// Review the `archetype` tags below if any feel off — they're easy to swap.
+// Result copy is ported verbatim from the approved Figma file. Questions and
+// answers are the client-supplied set: 10 questions x 5 options, where every
+// question offers exactly one answer per archetype (each archetype can score
+// once per question, 10 slots each across the quiz). The `archetype` tag on
+// each answer is as specified by the client.
 // ---------------------------------------------------------------------------
 
 export type ArchetypeId =
@@ -107,103 +103,112 @@ export interface Question {
 export const QUESTIONS: Question[] = [
   {
     id: 1,
-    prompt:
-      "It's your first hour on shift. What's your instinct as the queue starts building?",
+    prompt: "If your pharmacist side was a Nollywood character, who would you be?",
     answers: [
-      { id: "q1a1", text: "Get through it fast and clean, no backlog", archetype: "sprinter" },
-      { id: "q1a2", text: "Double-check anything that looks off before it's dispensed", archetype: "guardian" },
-      { id: "q1a3", text: "Make sure whoever's shadowing you today can keep up", archetype: "mentor" },
-      { id: "q1a4", text: "Slow down on anything you're not 100% sure about", archetype: "detective" },
+      { id: "q1a1", text: "Always three steps ahead, never resting", archetype: "sprinter" },
+      { id: "q1a2", text: "Nothing gets past them, they don't miss anything", archetype: "guardian" },
+      { id: "q1a3", text: "Everyone comes to them for advice", archetype: "mentor" },
+      { id: "q1a4", text: "Calms everybody down when there's trouble", archetype: "counselor" },
+      { id: "q1a5", text: "Always finds the one clue everybody else missed", archetype: "detective" },
     ],
   },
   {
     id: 2,
-    prompt: "A regular patient looks confused reading their new label.",
+    prompt: "What's playing in your head during your shift at the counter?",
     answers: [
-      { id: "q2a1", text: "Walk them through it, slowly, until it clicks", archetype: "counselor" },
-      { id: "q2a2", text: "Recheck the dose against their other medications first", archetype: "detective" },
-      { id: "q2a3", text: "Answer their question quickly so the line keeps moving", archetype: "sprinter" },
-      { id: "q2a4", text: "Ask what's confusing exactly, so it actually sticks this time", archetype: "mentor" },
+      { id: "q2a1", text: "Fast music, to keep you moving", archetype: "sprinter" },
+      { id: "q2a2", text: "No sound, you're thinking hard about something", archetype: "detective" },
+      { id: "q2a3", text: "Calm music, you're watching everything closely", archetype: "guardian" },
+      { id: "q2a4", text: "Something you'd hum while teaching someone", archetype: "mentor" },
+      { id: "q2a5", text: "Something warm, like talking to a friend", archetype: "counselor" },
     ],
   },
   {
     id: 3,
-    prompt: "When you hand a patient their medicine, what matters most to you?",
+    prompt: "Which one sounds like something you would actually say?",
     answers: [
-      { id: "q3a1", text: "Making sure it's the right one, no mistakes", archetype: "guardian" },
-      { id: "q3a2", text: "Making sure they understand how to take it", archetype: "counselor" },
-      { id: "q3a3", text: "Getting them sorted quickly", archetype: "sprinter" },
-      { id: "q3a4", text: "Catching anything that doesn't add up before they walk away", archetype: "detective" },
+      { id: "q3a1", text: "\"Let me explain it well, so you understand.\"", archetype: "counselor" },
+      { id: "q3a2", text: "\"Something is not right, let me check it well.\"", archetype: "detective" },
+      { id: "q3a3", text: "\"I can't relax until I'm sure.\"", archetype: "guardian" },
+      { id: "q3a4", text: "\"Don't worry, ask me again if you forget.\"", archetype: "mentor" },
+      { id: "q3a5", text: "\"No wahala, let's keep moving.\"", archetype: "sprinter" },
     ],
   },
   {
     id: 4,
-    prompt: "You spot something slightly unusual on a prescription.",
+    prompt: "What annoys you the most at the counter?",
     answers: [
-      { id: "q4a1", text: "Pause everything and dig into it until it makes sense", archetype: "detective" },
-      { id: "q4a2", text: "Flag it and confirm with the prescriber before moving on", archetype: "guardian" },
-      { id: "q4a3", text: "Use it as a teaching moment for the intern next to you", archetype: "mentor" },
-      { id: "q4a4", text: "Think about how you'd explain this to the patient if asked", archetype: "counselor" },
+      { id: "q4a1", text: "People who can't explain what's wrong with them", archetype: "detective" },
+      { id: "q4a2", text: "Someone rushing you before you finish checking", archetype: "guardian" },
+      { id: "q4a3", text: "A patient who nods but you can tell they don't understand", archetype: "counselor" },
+      { id: "q4a4", text: "A queue that refuses to move", archetype: "sprinter" },
+      { id: "q4a5", text: "New staff who don't ask questions when they should", archetype: "mentor" },
     ],
   },
   {
     id: 5,
-    prompt: "A new tech asks a question you've answered a hundred times.",
+    prompt: "If your work style was a Nigerian food, what would it be?",
     answers: [
-      { id: "q5a1", text: "Explain it fully again, like it's the first time", archetype: "counselor" },
-      { id: "q5a2", text: "Give the short answer, there's a queue", archetype: "sprinter" },
-      { id: "q5a3", text: "Turn it back on them — what would you tell a patient?", archetype: "detective" },
-      { id: "q5a4", text: "Ask what they think first, see how they reason it out", archetype: "mentor" },
+      { id: "q5a1", text: "Jollof rice at a party, fast and everyone gets fed on time", archetype: "sprinter" },
+      { id: "q5a2", text: "Pepper soup, you dig in to find out what's really inside", archetype: "detective" },
+      { id: "q5a3", text: "Amala and gbegiri, the classic combo you'll explain to anyone new", archetype: "counselor" },
+      { id: "q5a4", text: "Egusi soup your mother taught you, you learned it and now you teach it too", archetype: "mentor" },
+      { id: "q5a5", text: "Moi moi, cooked slow and checked well before it's served", archetype: "guardian" },
     ],
   },
   {
     id: 6,
-    prompt: "Two of a patient's meds could interact. How do you handle it?",
+    prompt: "Which compliment means the most to you?",
     answers: [
-      { id: "q6a1", text: "You already caught it before they mentioned it", archetype: "detective" },
-      { id: "q6a2", text: "Stop the dispense until it's fully resolved", archetype: "guardian" },
-      { id: "q6a3", text: "Resolve it fast so they're not stuck waiting", archetype: "sprinter" },
-      { id: "q6a4", text: "Walk the newer staff through how you spotted it", archetype: "mentor" },
+      { id: "q6a1", text: "\"You never miss anything.\"", archetype: "guardian" },
+      { id: "q6a2", text: "\"You explain things so well.\"", archetype: "counselor" },
+      { id: "q6a3", text: "\"You're fast, but you never make mistakes.\"", archetype: "sprinter" },
+      { id: "q6a4", text: "\"You taught me everything I know.\"", archetype: "mentor" },
+      { id: "q6a5", text: "\"You notice things nobody else notices.\"", archetype: "detective" },
     ],
   },
   {
     id: 7,
-    prompt: "End of a brutal shift — what are you most proud of?",
+    prompt: "Which of these sounds most like you?",
     answers: [
-      { id: "q7a1", text: "Nobody waited longer than they had to", archetype: "sprinter" },
-      { id: "q7a2", text: "Not one mistake made it out the door", archetype: "guardian" },
-      { id: "q7a3", text: "The new hire left knowing more than they came in with", archetype: "mentor" },
-      { id: "q7a4", text: "A patient left actually understanding their treatment", archetype: "counselor" },
+      { id: "q7a1", text: "\"It's better to catch a problem early.\"", archetype: "guardian" },
+      { id: "q7a2", text: "\"Don't rush to answer, ask more questions first.\"", archetype: "detective" },
+      { id: "q7a3", text: "\"Time doesn't wait for anybody.\"", archetype: "sprinter" },
+      { id: "q7a4", text: "\"Teach one person, and you teach many.\"", archetype: "mentor" },
+      { id: "q7a5", text: "\"Patience solves most problems.\"", archetype: "counselor" },
     ],
   },
   {
     id: 8,
-    prompt: "A dosage looks technically correct, but something feels off.",
+    prompt: "What's your worst nightmare at work?",
     answers: [
-      { id: "q8a1", text: "You trust the feeling and look closer", archetype: "detective" },
-      { id: "q8a2", text: "You verify against the full chart before dispensing", archetype: "guardian" },
-      { id: "q8a3", text: "You ask the patient how they're actually taking it", archetype: "counselor" },
-      { id: "q8a4", text: "You confirm it fast so you're not holding up the queue over nothing", archetype: "sprinter" },
+      { id: "q8a1", text: "Something bad happens and you didn't catch it on time", archetype: "guardian" },
+      { id: "q8a2", text: "You answered a question without checking well first", archetype: "detective" },
+      { id: "q8a3", text: "A patient leaves still confused, and you didn't notice", archetype: "counselor" },
+      { id: "q8a4", text: "Someone you were teaching learns it the wrong way", archetype: "mentor" },
+      { id: "q8a5", text: "The queue gets so long, nobody can catch up", archetype: "sprinter" },
     ],
   },
   {
     id: 9,
-    prompt: "The compliment you'd actually want from a coworker:",
+    prompt: "Pick your pharmacy superpower.",
     answers: [
-      { id: "q9a1", text: "You explain things better than anyone here", archetype: "mentor" },
-      { id: "q9a2", text: "Nothing gets past you", archetype: "guardian" },
-      { id: "q9a3", text: "You notice things nobody else would catch", archetype: "detective" },
-      { id: "q9a4", text: "Patients actually relax when they talk to you", archetype: "counselor" },
+      { id: "q9a1", text: "X-ray eyes, you see what everyone else missed", archetype: "guardian" },
+      { id: "q9a2", text: "Reading minds, you just know what's really going on", archetype: "detective" },
+      { id: "q9a3", text: "Super speed, nothing slows you down", archetype: "sprinter" },
+      { id: "q9a4", text: "Instant trust, people open up to you easily", archetype: "counselor" },
+      { id: "q9a5", text: "Being in two places at once, teaching and working", archetype: "mentor" },
     ],
   },
   {
     id: 10,
-    prompt: "If your pharmacy gave an award, which would you want?",
+    prompt: "Be honest, what would your coworkers call you?",
     answers: [
-      { id: "q10a1", text: "Fastest, most reliable turnaround", archetype: "sprinter" },
-      { id: "q10a2", text: "Best mentor to new staff", archetype: "mentor" },
-      { id: "q10a3", text: "Most trusted by patients", archetype: "counselor" },
-      { id: "q10a4", text: "Best at catching what others miss", archetype: "guardian" },
+      { id: "q10a1", text: "\"The fast one\"", archetype: "sprinter" },
+      { id: "q10a2", text: "\"The one who asks too many questions\"", archetype: "detective" },
+      { id: "q10a3", text: "\"The one patients ask for by name\"", archetype: "counselor" },
+      { id: "q10a4", text: "\"Oga/Madam teach-am\"", archetype: "mentor" },
+      { id: "q10a5", text: "\"The one who catches everything\"", archetype: "guardian" },
     ],
   },
 ];

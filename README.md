@@ -62,13 +62,8 @@ designed "1 in N" copy before that.
 
 ## Scoring
 
-Each of the 10 questions has 4 answers, each tagged with one of the 5
-archetypes (Counselor, Detective, Sprinter, Mentor, Guardian). Points are
-tallied across all 10 answers; ties are broken in this order: Counselor →
-Detective → Sprinter → Mentor → Guardian.
-
-The archetype tag on each answer wasn't stored anywhere retrievable from the
-Figma file (it only existed as design intent), so it was reconstructed in
-`src/lib/quiz-data.ts` from each answer's tone, balanced so every archetype
-scores exactly 8 out of the 40 total answer slots. Worth a read-through if
-you want to double check or tweak any assignment.
+Each of the 10 questions has 5 answers, one per archetype (Counselor,
+Detective, Sprinter, Mentor, Guardian). Points are tallied across all 10
+answers; ties are broken in this order: Counselor → Detective → Sprinter →
+Mentor → Guardian. Questions, answers and their archetype tags live in
+`src/lib/quiz-data.ts`.

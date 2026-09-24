@@ -75,7 +75,7 @@ export default function QuizPage() {
           {question.prompt}
         </h2>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 short:gap-2.5">
           {question.answers.map((answer) => (
             <AnswerOption
               key={answer.id}
@@ -87,12 +87,9 @@ export default function QuizPage() {
         </div>
 
         {isLast && (
-          // Pinned to the bottom edge when the answers scroll on short screens.
-          <div className="sticky bottom-0 -mx-6 mt-auto bg-white px-6 pb-16 pt-3 short:pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:-top-6 before:h-6 before:bg-linear-to-t before:from-white before:to-transparent">
-            <PrimaryButton onClick={submit} disabled={!selectedAnswerId}>
-              Submit
-            </PrimaryButton>
-          </div>
+          <PrimaryButton onClick={submit} disabled={!selectedAnswerId}>
+            Submit
+          </PrimaryButton>
         )}
       </main>
     </ViewTransition>
