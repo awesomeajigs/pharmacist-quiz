@@ -55,7 +55,10 @@ export default function ResultView({ archetype }: ResultViewProps) {
       />
 
       <div className="flex flex-col items-center gap-[14px] pb-6 text-center short:gap-2.5 short:pb-4">
-        <Mascot archetypeId={archetype.id} size={256} className="result-mascot" priority />
+        {/* Same gentle float as the home screen stickers. */}
+        <div className="animate-float flex">
+          <Mascot archetypeId={archetype.id} size={256} className="result-mascot" priority />
+        </div>
 
         <p className="text-[11px] font-medium leading-[1.2] tracking-[0.08em] text-ink-soft">
           YOUR RESULT

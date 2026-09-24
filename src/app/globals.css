@@ -58,6 +58,11 @@ body {
 .animate-float {
   animation: float 3.6s ease-in-out infinite;
 }
+@media (prefers-reduced-motion: reduce) {
+  .animate-float {
+    animation: none;
+  }
+}
 
 @keyframes breathe {
   0%, 100% { transform: scale(1); }
