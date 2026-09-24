@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: "What Kind of Pharmacist Are You?",
   description:
     "10 quick questions. One honest answer about how you show up at work. Take the World Pharmacist Day quiz.",

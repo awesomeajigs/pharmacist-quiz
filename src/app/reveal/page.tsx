@@ -25,7 +25,7 @@ export default function RevealPage() {
     }
   }, [router]);
 
-  const handleTap = useCallback(() => {
+  const handleTap = useCallback(async () => {
     if (navigated.current) return;
     navigated.current = true;
     setPressed(true);
@@ -33,18 +33,35 @@ export default function RevealPage() {
     const originEl = circleWrapRef.current;
     if (originEl) burstConfetti(originEl);
 
-    let archetype = "counselor";
+    let answerIds: string[] = [];
     try {
       const raw = sessionStorage.getItem(ANSWERS_STORAGE_KEY);
-      const answerIds: string[] = raw ? JSON.parse(raw) : [];
-      archetype = scoreQuiz(answerIds);
+      answerIds = raw ? JSON.parse(raw) : [];
     } catch {
-      // fall back to default archetype above
+      // sessionStorage unavailable — scoring falls back to the default archetype
     }
 
-    setTimeout(() => {
-      router.push(`/result/${archetype}`);
-    }, 650);
+    // Score + record on the server while the confetti plays; if the request
+    // fails, score locally so the reveal still works offline.
+    const confetti = new Promise((resolve) => setTimeout(resolve, 650));
+    const submitted = fetch("/api/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ answers: answerIds }),
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { archetype?: string } | null) => data?.archetype)
+      .catch(() => undefined);
+
+    const [, serverArchetype] = await Promise.all([confetti, submitted]);
+    const archetype = serverArchetype ?? scoreQuiz(answerIds);
+
+    try {
+      sessionStorage.removeItem(ANSWERS_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    router.push(`/result/${archetype}`);
   }, [router]);
 
   return (
