@@ -82,8 +82,7 @@ export const ARCHETYPES: Record<ArchetypeId, Archetype> = {
 };
 
 // Tie-break order when two or more archetypes are level after all 10
-// questions. Ordered by rarity (rarest archetype wins the tie first), so a
-// tied result leans toward the stat that feels more special.
+// questions. Ordered by rarity (rarest archetype wins the tie first).
 export const TIE_BREAK_ORDER: ArchetypeId[] = [
   "mentor",
   "detective",
@@ -229,9 +228,12 @@ const ANSWER_ARCHETYPE: Record<string, ArchetypeId> = QUESTIONS.reduce(
 );
 
 /**
- * Given an ordered list of chosen answer ids (one per question, in question
- * order), tally archetype points and resolve the winner. Ties are broken by
- * TIE_BREAK_ORDER.
+ * Scoring rule:
+ * - Every question offers all 5 archetypes as options (1 per archetype).
+ * - Each answer picked = 1 point for its archetype.
+ * - After 10 questions, the archetype with the highest tally wins.
+ * - If two or more archetypes are tied for the highest tally, the win
+ *   goes to whichever tied archetype appears first in TIE_BREAK_ORDER.
  */
 export function scoreQuiz(answerIds: string[]): ArchetypeId {
   const tally: Record<ArchetypeId, number> = {
